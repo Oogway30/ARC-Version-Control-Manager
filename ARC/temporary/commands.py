@@ -28,4 +28,5 @@ add_command.set_defaults(func=add)
 
 
 args = global_parser.parse_args()
+print(args)
 print(args.func(args))

@@ -6,6 +6,6 @@ def init(args):
         os.mkdir("./ARC")
         os.mkdir("./ARC/repos")
         os.mkdir("./ARC/temporary")
-        
+        return "Successfully Initialized!"
     else:
-        print("Already initialised!")
+        return "Already initialised!"

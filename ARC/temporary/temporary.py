@@ -34,7 +34,7 @@ def add(args:dict=None):
                         fileHash = calculate_file_hash(f"./{file}")
                         if file in os.listdir("./ARC/temporary") and fileHash == calculate_file_hash(f"./ARC/temporary/{file}"):
                             continue   
-                        elif file in os.listdir("./ARC/temporary") and fileHash != calculate_file_hash(f"./ARC/tmemporary/{file}"):
+                        elif file in os.listdir("./ARC/temporary") and fileHash != calculate_file_hash(f"./ARC/temporary/{file}"):
                             os.remove(f"./ARC/temporary/{file}")
                         raise WindowsError
                     except:
