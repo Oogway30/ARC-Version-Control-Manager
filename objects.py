@@ -1,2 +1,4 @@
-def commit(message=None):
-    pass
+def commit(args:dict=None):
+
+    return f"Commiting repository with the message: {args.message}."
+
