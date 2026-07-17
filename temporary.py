@@ -10,9 +10,15 @@ def calculate_file_hash(file_path):
 
 def add(args:dict=None):
     
-    filesPaths = "./"
-    #print(f"Current folder layout: {filesToCopy}")
+    if args.path[0] == "./": 
+        filesPaths = "./"
     
+    elif args.path[0]=='./' and len(args.path)>1:
+        raise IndexError
+    else:
+        filesPaths = args.path 
+   
+
     if "ARC" not in os.listdir(): 
         return "Initialize First!"
 
@@ -26,7 +32,7 @@ def add(args:dict=None):
             try:
                 if os.path.isdir(f"./{file}"):
                     if file in os.listdir("./ARC/temporary"):
-                        os.rmdir(f"./ARC/temporary/{file}")
+                        shutil.rmtree(f"./ARC/temporary/{file}")
                     shutil.copytree(f"./{file}",f"./ARC/temporary/{file}")
                     print(f"added: {file}")
                 else:
@@ -41,10 +47,11 @@ def add(args:dict=None):
                         shutil.copy(f"./{file}","./ARC/temporary")
                         print(f"added: {file}")
                     
-
             except Exception as e:
                 print(f"Skipped: {file}")
                 print(e)
+            
+            
     
     else:
         for filePath in filesPaths:
@@ -60,6 +67,30 @@ def add(args:dict=None):
                     print(f"Skipped: {filePath}")
                     print(e)
             else:
-                print(f"File/Folder does not exist: {filesPaths}")
+                print(f"File/Folder does not exist: {filePath}")
 
-add()
+    return "File(s)/ Folder(s) added Successfully!"
+
+
+def untracked_files(args):
+    args = None
+    untrackedFiles = []
+    filesInDIR = os.listdir("./")
+    if "ARC" not in os.listdir("./"): 
+        return "Initialize First!"
+    filesInDIR.remove("ARC")
+    for filePath in filesInDIR:
+        if filePath.startswith(".") or filePath.startswith("_"):
+            continue
+        if os.path.isdir(f"./{filePath}"):
+            continue
+        fileHash = calculate_file_hash(f"./{filePath}")
+        if filePath in os.listdir("./ARC/temporary") and fileHash == calculate_file_hash(f"./ARC/temporary/{filePath}"):
+            continue   
+        elif filePath in os.listdir("./ARC/temporary") and fileHash != calculate_file_hash(f"./ARC/tmemporary/{filePath}"):
+            untrackedFiles.append(filePath)
+        elif filePath not in os.listdir("./ARC/temporary"):
+            untrackedFiles.append(filePath)
+    for file in untrackedFiles:
+        print(file)
+

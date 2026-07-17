@@ -1,7 +1,7 @@
 import argparse
 from repository import init
 from objects import commit
-from temporary import add
+from temporary import add,untracked_files
 
 
 global_parser = argparse.ArgumentParser(
@@ -24,9 +24,11 @@ add_command = subparsers.add_parser("add",help="Add to temporary storage.")
 add_command.add_argument("path", type=str, help="Path to files.", nargs="*")
 add_command.set_defaults(func=add)
 
+untracked_files_command = subparsers.add_parser("untracked_Files",help="See untracked files.")
+untracked_files_command.set_defaults(func=untracked_files)
+
 
 
 
 args = global_parser.parse_args()
-print(args)
 print(args.func(args))

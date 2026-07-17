@@ -4,8 +4,8 @@ def init(args):
 
     if "ARC" not in os.listdir(): 
         os.mkdir("./ARC")
-        os.mkdir("./ARC/repos")
+        os.mkdir("./ARC/repositories")
         os.mkdir("./ARC/temporary")
-        return "Successfully Initialized!"
+        print("Successfully Initialized!")
     else:
-        return "Already initialised!"
+        print("Already initialised!")
