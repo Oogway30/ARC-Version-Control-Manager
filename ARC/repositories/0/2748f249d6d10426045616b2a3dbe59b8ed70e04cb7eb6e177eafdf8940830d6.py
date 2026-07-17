@@ -11,8 +11,8 @@ def commit(args:dict=None):
 
     filesToAdd = os.listdir("./ARC/temporary")
     repositories = os.listdir("./ARC/repositories")
-    lenghtOfRepo = len(repositories)
-    if filesToAdd and lenghtOfRepo ==0 :
+    lenghtOfRepo = len(os.listdir("./ARC/repositories"))
+    if filesToAdd and not(repositories):
         os.mkdir(f"./ARC/repositories/{lenghtOfRepo}")
         for file in filesToAdd:
             if os.path.isdir(f"./ARC/temporary/{file}"):
@@ -28,5 +28,3 @@ def commit(args:dict=None):
             print(f"removed: {file} with the hash: {newFileName}")
         
         return Metadata
-
-        

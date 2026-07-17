@@ -36,10 +36,11 @@ def add(args:dict=None):
                 continue
             try:
                 if os.path.isdir(f"./{file}"):
-                    if file in os.listdir("./ARC/temporary"):
-                        shutil.rmtree(f"./ARC/temporary/{file}")
-                    shutil.copytree(f"./{file}",f"./ARC/temporary/{file}")
-                    AddedFiles.append(file)
+                    #if file in os.listdir("./ARC/temporary"):
+                        #shutil.rmtree(f"./ARC/temporary/{file}")
+                    #shutil.copytree(f"./{file}",f"./ARC/temporary/{file}")
+                    #AddedFiles.append(file)
+                    continue
                 else:
                     try:
                         fileHash = calculate_file_hash(f"./{file}")
@@ -69,10 +70,11 @@ def add(args:dict=None):
                     continue
                 try:
                     if os.path.isdir(filePath):
-                        if fileName in os.listdir("./ARC/temporary"):
-                            shutil.rmtree(f"./ARC/temporary/{fileName}")
-                        shutil.copytree(filePath,f"./ARC/temporary/{fileName}")
-                        AddedFiles.append(fileName)
+                        #if fileName in os.listdir("./ARC/temporary"):
+                            #shutil.rmtree(f"./ARC/temporary/{fileName}")
+                        #shutil.copytree(filePath,f"./ARC/temporary/{fileName}")
+                        #AddedFiles.append(fileName)
+                        continue
                     else:
                         try:
                             fileHash = calculate_file_hash(filePath)
