@@ -1,4 +1,4 @@
-import os as os
+import os
 import json
 from datetime import datetime as dt
 def init(args):
@@ -15,5 +15,3 @@ def init(args):
 
     else:
         print("Already initialised!")
-
-#Something changed here!!

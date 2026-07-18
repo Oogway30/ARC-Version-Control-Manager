@@ -113,4 +113,4 @@ def checkout(CommitNR):
     for fileToAdd in filesToAdd:
         shutil.move(f"./ARC/temporary/{fileToAdd}")
     
-#Something changed here!!
+#Something changed here!
