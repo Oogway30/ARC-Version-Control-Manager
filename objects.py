@@ -102,6 +102,11 @@ def commit(args:dict=None):
             return {"status":"Failure","Exception":err}
         
 def checkout(CommitNR:dict=None):
+    if "ARC" not in os.listdir('./'): 
+        return "Initialize First!"
+    if not os.listdir("./ARC/repositories"):
+        return "No commits made!"
+
     CommitNR = CommitNR.commit_nr
     if isinstance(CommitNR,int):
         

@@ -11,9 +11,8 @@ def init(args):
         generalMetadataVariable = {"author":AUTHOR,"createdAt":dt.now().isoformat(),"NRofRepos":len(os.listdir("./ARC/repositories"))}
         with open("./ARC/.generalMetadataARC.json","w") as generalMetadata:
             json.dump(generalMetadataVariable,generalMetadata)
-        print("Successfully Initialized!")
+        return "Successfully Initialized!"
 
     else:
-        print("Already initialised!")
+        return "Already initialised!"
 
-#Something changed here!!
