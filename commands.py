@@ -1,6 +1,6 @@
 import argparse
 from repository import init
-from objects import commit
+from objects import commit,checkout
 from temporary import add,untracked_files
 
 
@@ -22,8 +22,8 @@ commit_command.add_argument("-m", "--message", type=str, help="Add a message.")
 commit_command.set_defaults(func=commit)
 
 checkout_command = subparsers.add_parser("checkout",help="Checkout to a commit.")
-checkout_command.add_argument("-m", "--message", type=str, help="Add a message.")
-checkout_command.set_defaults(func=commit)
+checkout_command.add_argument("-cnr", "--commit_nr", type=int, help="Commit NR to checkout to.")
+checkout_command.set_defaults(func=checkout)
 
 add_command = subparsers.add_parser("add",help="Add to Temporary Storage.")
 add_command.add_argument("path", type=str, help="Path to files.", nargs="*")
@@ -37,4 +37,3 @@ untracked_files_command.set_defaults(func=untracked_files)
 
 args = global_parser.parse_args()
 print(args.func(args))
-#Something changed here!!

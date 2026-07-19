@@ -19,9 +19,10 @@ def get_last_Commit_Metadata():
     return Metadata
 
 def helperFunction(FileHash,PathToFile, lenghtOfRepo, Metadata, file):
-    os.rename(PathToFile,f"./ARC/temporary/{FileHash}")
-    shutil.copyfile(f"./ARC/temporary/{FileHash}",f"./ARC/.objects/{FileHash}")
-    os.remove(f"./ARC/temporary/{FileHash}")
+    os.rename(PathToFile,f"./ARC/temporary/{FileHash}{os.path.splitext(file)[1]}")
+    shutil.move(f"./ARC/temporary/{FileHash}{os.path.splitext(file)[1]}",f"./ARC/.objects/{FileHash}{os.path.splitext(file)[1]}")
+    #shutil.copyfile(f"./ARC/temporary/{FileHash}",f"./ARC/.objects/{FileHash}")
+    #os.remove(f"./ARC/temporary/{FileHash}")
     print(f"removed: {file} with the hash: {FileHash}")
 
     Metadata["timestamp"] = str(dt.now().isoformat())
@@ -51,11 +52,10 @@ def commit(args:dict=None):
             for file in filesToAdd:
                 if os.path.isdir(f"./ARC/temporary/{file}"):
                     continue
-                
+                FileHash = calculate_file_hash(f"./ARC/temporary/{file}")
                 PathToFile = f"./ARC/temporary/{file}"
-                Metadata["files"][file] = calculate_file_hash(f"./ARC/temporary/{file}")
-                newFileName = Metadata["files"][file]
-                helperFunction(newFileName,PathToFile, lenghtOfRepo, Metadata, file)
+                Metadata["files"][file] = f"{FileHash}{os.path.splitext(file)[1]}"
+                helperFunction(FileHash,PathToFile, lenghtOfRepo, Metadata, file)
             return {"status":"Success"}
 
         except Exception as err:
@@ -75,7 +75,7 @@ def commit(args:dict=None):
                 PathToFile = f"./ARC/temporary/{file}"
                 FileHash = calculate_file_hash(file)
                 try:
-                    if Metadata["files"][file] and Metadata["files"][file] == FileHash:
+                    if Metadata["files"][file] and Metadata["files"][file] == f"{FileHash}{os.path.splitext(file)[1]}":
                         Metadata["files"][file] = lastCommitMetadata[file] #changed the names from lastcommitmetadata to metadata as lastcommitmetadata (file info) has been saved to metadata file and chnaged only if the hash has been changed
 
                         os.remove(f"./ARC/temporary/{file}")
@@ -86,18 +86,30 @@ def commit(args:dict=None):
                         
                     
                     elif Metadata["files"][file] and Metadata["files"][file] != FileHash:
-                        Metadata["files"][file] = FileHash
-                        Metadata["changedFiles"][file] = FileHash 
+                        Metadata["files"][file] = f"{FileHash}{os.path.splitext(file)[1]}"
+                        Metadata["changedFiles"][file] = f"{FileHash}{os.path.splitext(file)[1]}" 
                         helperFunction(FileHash,PathToFile, lenghtOfRepo, Metadata, file)   
                 except KeyError:                    
                     
-                    Metadata["files"][file] = FileHash
-                    Metadata["newlyAddedFiles"][file] = FileHash 
+                    Metadata["files"][file] = f"{FileHash}{[os.path.splitext(file)[1]]}"
+                    Metadata["newlyAddedFiles"][file] = f"{FileHash}{os.path.splitext(file)[1]}" 
                     helperFunction(FileHash,PathToFile, lenghtOfRepo, Metadata, file)
             return {"status":"Success"}
         except Exception as err:
             return {"status":"Failure","Exception":err}
-
+        
+def checkout(CommitNR):
+    try:
+        filesToAdd = get_Commit_Metadata(CommitNR)['files']
+    except:
+        return filesToAdd
     
+    filesToReplace = os.listdir("./")
+    for file in filesToReplace:
+        if file.startswith('.') or file.startswith("_") or os.path.isdir(file):
+            continue
+        os.remove(file)
+    for fileToAdd in filesToAdd:
+        shutil.move(f"./ARC/temporary/{fileToAdd}")
     
-#Something changed here!
+#Something changed here!!

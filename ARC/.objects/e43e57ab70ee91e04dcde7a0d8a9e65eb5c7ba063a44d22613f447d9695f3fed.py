@@ -19,8 +19,8 @@ def get_last_Commit_Metadata():
     return Metadata
 
 def helperFunction(FileHash,PathToFile, lenghtOfRepo, Metadata, file):
-    os.rename(PathToFile,f"./ARC/temporary/{FileHash}")
-    shutil.move(f"./ARC/temporary/{FileHash}",f"./ARC/.objects/{FileHash}")
+    os.rename(PathToFile,f"./ARC/temporary/{FileHash}{os.path.splitext(file)[1]}")
+    shutil.move(f"./ARC/temporary/{FileHash}{os.path.splitext(file)[1]}",f"./ARC/.objects/{FileHash}{os.path.splitext(file)[1]}")
     #shutil.copyfile(f"./ARC/temporary/{FileHash}",f"./ARC/.objects/{FileHash}")
     #os.remove(f"./ARC/temporary/{FileHash}")
     print(f"removed: {file} with the hash: {FileHash}")
@@ -52,11 +52,10 @@ def commit(args:dict=None):
             for file in filesToAdd:
                 if os.path.isdir(f"./ARC/temporary/{file}"):
                     continue
-                
+                FileHash = calculate_file_hash(f"./ARC/temporary/{file}")
                 PathToFile = f"./ARC/temporary/{file}"
-                Metadata["files"][file] = calculate_file_hash(f"./ARC/temporary/{file}")
-                newFileName = Metadata["files"][file]
-                helperFunction(newFileName,PathToFile, lenghtOfRepo, Metadata, file)
+                Metadata["files"][file] = f"{FileHash}{os.path.splitext(file)[1]}"
+                helperFunction(FileHash,PathToFile, lenghtOfRepo, Metadata, file)
             return {"status":"Success"}
 
         except Exception as err:
@@ -87,13 +86,13 @@ def commit(args:dict=None):
                         
                     
                     elif Metadata["files"][file] and Metadata["files"][file] != FileHash:
-                        Metadata["files"][file] = f"{FileHash}{os.path.splitext(file)}"
-                        Metadata["changedFiles"][file] = f"{FileHash}{os.path.splitext(file)}" 
+                        Metadata["files"][file] = f"{FileHash}{os.path.splitext(file)[1]}"
+                        Metadata["changedFiles"][file] = f"{FileHash}{os.path.splitext(file)[1]}" 
                         helperFunction(FileHash,PathToFile, lenghtOfRepo, Metadata, file)   
                 except KeyError:                    
                     
-                    Metadata["files"][file] = f"{FileHash}{os.path.splitext(file)}"
-                    Metadata["newlyAddedFiles"][file] = f"{FileHash}{os.path.splitext(file)}" 
+                    Metadata["files"][file] = f"{FileHash}{[os.path.splitext(file)[1]]}"
+                    Metadata["newlyAddedFiles"][file] = f"{FileHash}{os.path.splitext(file)[1]}" 
                     helperFunction(FileHash,PathToFile, lenghtOfRepo, Metadata, file)
             return {"status":"Success"}
         except Exception as err:
@@ -113,4 +112,4 @@ def checkout(CommitNR):
     for fileToAdd in filesToAdd:
         shutil.move(f"./ARC/temporary/{fileToAdd}")
     
-#Something changed here!
+#Something changed here!!
